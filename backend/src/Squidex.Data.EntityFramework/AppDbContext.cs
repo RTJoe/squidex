@@ -7,6 +7,7 @@
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OpenIddict.EntityFrameworkCore.Models;
 using Squidex.Assets.TusAdapter;
 using Squidex.Domain.Apps.Entities.Apps;
 using Squidex.Domain.Apps.Entities.Assets;
@@ -54,6 +55,7 @@ public abstract class AppDbContext(DbContextOptions options, IJsonSerializer jso
         builder.UseMigration();
         builder.UseNames(jsonSerializer, jsonColumnType);
         builder.UseOpenIddict();
+        builder.UseOpenIddictTokenType();
         builder.UseRequest(jsonSerializer, jsonColumnType);
         builder.UseRules(jsonSerializer, jsonColumnType);
         builder.UseSchema(jsonSerializer, jsonColumnType);
@@ -73,6 +75,18 @@ public abstract class AppDbContext(DbContextOptions options, IJsonSerializer jso
 internal static class Extensions
 #pragma warning restore MA0048 // File name must match type name
 {
+    // The pinned Squidex.OpenIdDict.EntityFramework fork still limits the token type to 50 characters,
+    // but OpenIddict 7.4 persists the full token type identifiers instead of the short names it used
+    // before. The longest of them, "urn:openiddict:params:oauth:token-type:authorization_code", needs
+    // 57 characters, so every interactive login failed to store its authorization code. Official
+    // OpenIddict widened the column to 150 characters for the same reason, so use the same length here.
+    public static void UseOpenIddictTokenType(this ModelBuilder builder)
+    {
+        builder.Entity<OpenIddictEntityFrameworkCoreToken>()
+            .Property(x => x.Type)
+            .HasMaxLength(150);
+    }
+
     public static void UseIdentity(this ModelBuilder builder, IJsonSerializer jsonSerializer, string? jsonColumn)
     {
         builder.UseSnapshot<DefaultKeyStore.State>(jsonSerializer, jsonColumn);

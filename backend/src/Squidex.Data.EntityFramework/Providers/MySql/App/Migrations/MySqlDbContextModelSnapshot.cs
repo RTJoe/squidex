@@ -18,7 +18,7 @@ namespace Squidex.Providers.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.5")
+                .HasAnnotation("ProductVersion", "10.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -306,8 +306,8 @@ namespace Squidex.Providers.MySql.Migrations
                         .HasColumnType("varchar(400)");
 
                     b.Property<string>("Type")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 

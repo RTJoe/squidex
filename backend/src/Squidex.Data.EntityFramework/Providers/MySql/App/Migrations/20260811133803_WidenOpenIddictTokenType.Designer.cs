@@ -2,44 +2,46 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Squidex.Providers.Postgres.App;
+using Squidex.Providers.MySql.App;
 
 #nullable disable
 
-namespace Squidex.Providers.Postgres.Migrations
+namespace Squidex.Providers.MySql.App.Migrations
 {
-    [DbContext(typeof(PostgresAppDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MySqlAppDbContext))]
+    [Migration("20260811133803_WidenOpenIddictTokenType")]
+    partial class WidenOpenIddictTokenType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
@@ -54,19 +56,19 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -78,54 +80,54 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
@@ -143,19 +145,19 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -167,17 +169,17 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -189,10 +191,10 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -204,16 +206,16 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -224,36 +226,36 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ApplicationId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConcurrencyToken")
                         .IsConcurrencyToken()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Properties")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Scopes")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Subject")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("Type")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -266,49 +268,49 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ApplicationId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("AuthorizationId")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConcurrencyToken")
                         .IsConcurrencyToken()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Payload")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Properties")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("RedemptionDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("ReferenceId")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Status")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Subject")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("Type")
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)");
+                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 
@@ -326,18 +328,18 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<Guid>("Version")
                         .IsConcurrencyToken()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -350,14 +352,14 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Key")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset>("Expires")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Key");
 
@@ -370,32 +372,32 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<DateTimeOffset>("IndexedCreated")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("Created");
 
                     b.Property<bool>("IndexedDeleted")
-                        .HasColumnType("boolean")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("Deleted");
 
                     b.Property<string>("IndexedName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("Name");
 
                     b.Property<string>("IndexedTeamId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("TeamId");
 
                     b.Property<string>("IndexedUserIds")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("UserIds");
 
                     b.Property<long>("Version")
@@ -410,27 +412,27 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("FileHash")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
@@ -441,47 +443,47 @@ namespace Squidex.Providers.Postgres.Migrations
                     b.Property<string>("Id")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsProtected")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Metadata")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("MimeType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ParentId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Slug")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Tags")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<long>("TotalSize")
                         .HasColumnType("bigint");
@@ -489,7 +491,7 @@ namespace Squidex.Providers.Postgres.Migrations
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -505,50 +507,50 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("FolderName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Id")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ParentId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -564,76 +566,76 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("Id")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedSchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("NewData")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("NewStatus")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ScheduleJob")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<DateTimeOffset?>("ScheduledAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("TranslationStatus")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -647,76 +649,76 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("Id")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("IndexedSchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastModifiedBy")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("NewData")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("NewStatus")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ScheduleJob")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<DateTimeOffset?>("ScheduledAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("TranslationStatus")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -732,17 +734,17 @@ namespace Squidex.Providers.Postgres.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -756,21 +758,21 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("AppId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FromKey")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ToId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FromSchema")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasDefaultValue("00000000-0000-0000-0000-000000000000");
 
                     b.HasKey("AppId", "FromKey", "ToId");
@@ -782,21 +784,21 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("AppId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FromKey")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ToId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("FromSchema")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasDefaultValue("00000000-0000-0000-0000-000000000000");
 
                     b.HasKey("AppId", "FromKey", "ToId");
@@ -808,22 +810,22 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ContentId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("GeoField")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<Geometry>("GeoObject")
                         .IsRequired()
@@ -832,16 +834,16 @@ namespace Squidex.Providers.Postgres.Migrations
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("ServeAll")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ServePublished")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<byte>("Stage")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.HasKey("Id");
 
@@ -852,35 +854,35 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ContentId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("ServeAll")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ServePublished")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<byte>("Stage")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("Texts")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -891,41 +893,41 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("AppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ContentId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("SchemaId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("ServeAll")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ServePublished")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<byte>("Stage")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<string>("UserInfoApiKey")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("UserInfoRole")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
@@ -938,12 +940,12 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("UniqueContentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("UniqueContentId");
 
@@ -954,32 +956,32 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Actor")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Channel")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Parameters")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -993,25 +995,25 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("AppId");
 
                     b.Property<bool>("IndexedDeleted")
-                        .HasColumnType("boolean")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("Deleted");
 
                     b.Property<string>("IndexedId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("Id");
 
                     b.Property<long>("Version")
@@ -1026,30 +1028,30 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("IndexedAppId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("AppId");
 
                     b.Property<bool>("IndexedDeleted")
-                        .HasColumnType("boolean")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("Deleted");
 
                     b.Property<string>("IndexedId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasColumnType("varchar(255)")
                         .HasColumnName("Id");
 
                     b.Property<string>("IndexedName")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("Name");
 
                     b.Property<long>("Version")
@@ -1064,22 +1066,22 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<string>("IndexedAuthDomain")
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("AuthDomain");
 
                     b.Property<bool>("IndexedDeleted")
-                        .HasColumnType("boolean")
+                        .HasColumnType("tinyint(1)")
                         .HasColumnName("Deleted");
 
                     b.Property<string>("IndexedUserIds")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("longtext")
                         .HasColumnName("UserIds");
 
                     b.Property<long>("Version")
@@ -1093,19 +1095,19 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Events.EntityFramework.EFEventCommit", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("EventStream")
                         .IsRequired()
                         .HasMaxLength(750)
-                        .HasColumnType("character varying(750)");
+                        .HasColumnType("varchar(750)");
 
                     b.Property<long>("EventStreamOffset")
                         .HasColumnType("bigint");
 
-                    b.PrimitiveCollection<string[]>("Events")
+                    b.PrimitiveCollection<string>("Events")
                         .IsRequired()
-                        .HasColumnType("text[]");
+                        .HasColumnType("longtext");
 
                     b.Property<long>("EventsCount")
                         .HasColumnType("bigint");
@@ -1114,7 +1116,7 @@ namespace Squidex.Providers.Postgres.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -1145,14 +1147,14 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTimeOffset>("DueTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -1164,30 +1166,30 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Flows.EntityFramework.EFFlowStateEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("DefinitionId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTimeOffset?>("DueTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("SchedulePartition")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -1199,14 +1201,14 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Infrastructure.Caching.EFCacheEntity", b =>
                 {
                     b.Property<string>("Key")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Expires")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte[]>("Value")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("longblob");
 
                     b.HasKey("Key");
 
@@ -1217,20 +1219,20 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Properties")
                         .IsRequired()
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<DateTimeOffset>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -1242,13 +1244,13 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Infrastructure.Migrations.EFMigrationEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsLocked")
-                        .HasColumnType("boolean");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Version")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1259,10 +1261,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1276,10 +1278,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1293,10 +1295,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1310,10 +1312,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1327,10 +1329,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1344,10 +1346,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1361,10 +1363,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1378,10 +1380,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1395,10 +1397,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1412,10 +1414,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1429,10 +1431,10 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("DocumentId")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Document")
-                        .HasColumnType("jsonb");
+                        .HasColumnType("json");
 
                     b.Property<long>("Version")
                         .HasColumnType("bigint");
@@ -1445,19 +1447,19 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Infrastructure.UsageTracking.EFUsageCounterEntity", b =>
                 {
                     b.Property<string>("Key")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Category")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("CounterKey")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<double>("CounterValue")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.HasKey("Key", "Date", "Category", "CounterKey");
 
@@ -1467,36 +1469,36 @@ namespace Squidex.Providers.Postgres.Migrations
             modelBuilder.Entity("Squidex.Messaging.EntityFramework.EFMessage", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ChannelName")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<byte[]>("MessageData")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("longblob");
 
                     b.Property<string>("MessageHeaders")
                         .IsRequired()
                         .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
+                        .HasColumnType("varchar(2000)");
 
                     b.Property<string>("QueueName")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime?>("TimeHandled")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("TimeToLive")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("Version")
                         .IsConcurrencyToken()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -1509,27 +1511,27 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Group")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Key")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Expiration")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<byte[]>("ValueData")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("longblob");
 
                     b.Property<string>("ValueFormat")
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ValueType")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Group", "Key");
 
@@ -1542,14 +1544,14 @@ namespace Squidex.Providers.Postgres.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("varchar(256)");
 
                     b.Property<byte[]>("Data")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("longblob");
 
                     b.Property<DateTime?>("Expiration")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 

@@ -48,4 +48,39 @@ public abstract class EFOpenIddictTests<TContext>(ISqlFixture<TContext> fixture)
 
         await dbContext.SaveChangesAsync();
     }
+
+    [Fact]
+    public async Task Should_roundtrip_openiddict_token_with_long_type_identifier()
+    {
+        // OpenIddict persists the full token type identifier, and the longest of them needs 57
+        // characters, which is more than the 50 characters the token type column used to allow.
+        var type = TokenTypeIdentifiers.Private.AuthorizationCode;
+        var tokenId = Guid.NewGuid().ToString();
+
+        await using (var dbContext = await fixture.DbContextFactory.CreateDbContextAsync())
+        {
+            var token = new OpenIddictEntityFrameworkCoreToken
+            {
+                Id = tokenId,
+                ApplicationId = null,
+                CreationDate = DateTime.UtcNow,
+                ExpirationDate = DateTime.UtcNow.AddMinutes(5),
+                Status = Statuses.Valid,
+                Subject = "admin@squidex.io",
+                Type = type,
+            };
+
+            dbContext.Set<OpenIddictEntityFrameworkCoreToken>().Add(token);
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        await using (var dbContext = await fixture.DbContextFactory.CreateDbContextAsync())
+        {
+            // Compare the stored value, because not every database fails when it truncates.
+            var found = await dbContext.Set<OpenIddictEntityFrameworkCoreToken>().FindAsync(tokenId);
+
+            Assert.Equal(type, found?.Type);
+        }
+    }
 }
